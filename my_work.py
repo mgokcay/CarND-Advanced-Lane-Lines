@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 from camera_calib import calibrateCamera
 from threshold import threshold
 from warp import warp
+from lane_detection import find_lane_polynomials
 #%matplotlib qt
-
 
 # Make a list of calibration images
 calib_images = glob.glob('./camera_cal/calibration*.jpg')
@@ -23,10 +23,13 @@ for image in test_images:
     cv2.imwrite('./output_images/undistorted/' + os.path.basename(image), img_undistorted)
 
     img_threshold = threshold(img_undistorted)
-    cv2.imwrite('./output_images/threshold/' + os.path.basename(image), img_threshold)
+    cv2.imwrite('./output_images/threshold/' + os.path.basename(image), img_threshold * 255)
 
     img_threshold_warped = warp(img_threshold)
-    cv2.imwrite('./output_images/warped/' + os.path.basename(image), img_threshold_warped)
+    cv2.imwrite('./output_images/warped/' + os.path.basename(image), img_threshold_warped * 255)
+
+    out_img = find_lane_polynomials(img_threshold_warped)
+    cv2.imwrite('./output_images/lane_lines/' + os.path.basename(image), out_img)
 
     # # Plot the result
     # f, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 9))
@@ -43,6 +46,6 @@ for image in test_images:
     #
     # plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
     # plt.show()
-    # print("ok")
+    print("ok")
 
 

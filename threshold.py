@@ -26,6 +26,6 @@ def threshold(img, s_thresh=(170, 255), sx_thresh=(20, 100)):
 
     # Combine the two binary thresholds
     combined_binary = np.zeros_like(sxbinary)
-    combined_binary[(s_binary == 1) | (sxbinary == 1)] = 255
+    combined_binary[(s_binary == 1) | (sxbinary == 1)] = 1
 
     return combined_binary
