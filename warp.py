@@ -6,11 +6,16 @@ def warp(img):
     # Grab the image shape
     img_size = (img.shape[1], img.shape[0])
 
+    # src = np.float32(
+    #     [[(img_size[0] / 2) - 75, img_size[1] / 2 + 100],
+    #      [((img_size[0] / 2) - 545), img_size[1]],
+    #      [(img_size[0] / 2) + 545, img_size[1]],
+    #      [(img_size[0] / 2 + 75), img_size[1] / 2 + 100]])
     src = np.float32(
-        [[(img_size[0] / 2) - 75, img_size[1] / 2 + 100],
+        [[(img_size[0] / 2) - 45, img_size[1] / 2 + 85],
          [((img_size[0] / 2) - 545), img_size[1]],
          [(img_size[0] / 2) + 545, img_size[1]],
-         [(img_size[0] / 2 + 75), img_size[1] / 2 + 100]])
+         [(img_size[0] / 2 + 45), img_size[1] / 2 + 85]])
 
     dst = np.float32(
         [[(img_size[0] / 4), 0],
