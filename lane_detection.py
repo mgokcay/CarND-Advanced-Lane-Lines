@@ -165,11 +165,19 @@ def search_around_poly(left_fit, right_fit, margin, binary_warped):
 
 def measure_curvature(y_eval, polynomial):
 
-    ym_per_pix = 30 / 720  # meters per pixel in y dimension
-    xm_per_pix = 3.7 / 700  # meters per pixel in x dimension
+    ym_per_pix = 25 / 720  # meters per pixel in y dimension
+    xm_per_pix = 3.7 / 530  # meters per pixel in x dimension
     curvature = ((1 + (2 * polynomial[0] * y_eval * ym_per_pix + polynomial[1]) ** 2) ** 1.5) / np.absolute(2 * polynomial[0])
     return curvature
 
+def measure_position(y_eval, image_width, polynomial1, polynomial2):
+
+    xm_per_pix = 3.7 / 530  # meters per pixel in x dimension
+    pos1 = polynomial1[0] * y_eval ** 2 + polynomial1[1] * y_eval + polynomial1[2]
+    pos2 = polynomial2[0] * y_eval ** 2 + polynomial2[1] * y_eval + polynomial2[2]
+    pos_center = (pos1 + pos2) / 2
+    vehicle_pos = xm_per_pix * (pos_center - image_width/2)
+    return vehicle_pos
 
 first_image = True
 left_fit = None

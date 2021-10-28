@@ -38,7 +38,7 @@ def warp(img):
     # ax1.set_title('Original Image', fontsize=40)
     #
     # ax2.imshow(warped)
-    # ax2.set_title('Threshold', fontsize=40)
+    # ax2.set_title('Warped', fontsize=40)
     #
     # plt.show()
 

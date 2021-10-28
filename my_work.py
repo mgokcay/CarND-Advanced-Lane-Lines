@@ -7,7 +7,7 @@ from camera_calib import calibrateCamera
 from threshold import threshold
 from warp import warp
 from lane_detection import find_lane_polynomials
-from lane_detection import measure_curvature
+from lane_detection import measure_curvature, measure_position
 from moviepy.editor import VideoFileClip
 #%matplotlib qt
 
@@ -32,17 +32,17 @@ def process_image(img, cam_mtx, dist_coeff, write_outputs=False, output_file_nam
 
     left_curverad = measure_curvature(np.max(ploty), left_fit)
     right_curverad = measure_curvature(np.max(ploty), right_fit)
-    vehicle_position = left_fit[2]
+    vehicle_position = measure_position(np.max(ploty), img.shape[1], left_fit, right_fit)
 
     img_size = (out_img.shape[1], out_img.shape[0])
     img_lane = cv2.warpPerspective(out_img, M_inv, img_size)
     img_final = cv2.addWeighted(img_undistorted, 1.0, img_lane, 0.4, 0)
     cv2.putText(img_final,
-                "Radious of curvature: Left " + str(int(left_curverad)) + " Right " + str(int(right_curverad)),
+                "Radious of curvature: " + str(int((left_curverad+right_curverad)/2)) + " m",
                 (50, 50), cv2.FONT_HERSHEY_SIMPLEX,
                 1, (255, 255, 255), 2, cv2.LINE_AA)
     cv2.putText(img_final,
-                "Vehicle position: " + str(int(0.0)),
+                "Vehicle position: " + "{:.2f}".format(vehicle_position) + " m",
                 (50, 100), cv2.FONT_HERSHEY_SIMPLEX,
                 1, (255, 255, 255), 2, cv2.LINE_AA)
     if write_outputs:
