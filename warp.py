@@ -28,9 +28,9 @@ def warp(img):
     # Warp the image using OpenCV warpPerspective()
     warped = cv2.warpPerspective(img, M, img_size)
 
-    # img_marked = img.copy()
-    # cv2.polylines(img_marked, [src.astype(int)], True, (255, 120, 255), 3)
-    # # Plot the result
+    img_marked = img.copy()
+    cv2.polylines(img_marked, [src.astype(int)], True, (255, 120, 255), 3)
+    # Plot the result
     # f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
     # f.tight_layout()
     #

@@ -16,19 +16,19 @@ def process_image(img, cam_mtx, dist_coeff, write_outputs=False, output_file_nam
 
     img_undistorted = cv2.undistort(img, cam_mtx, dist_coeff, None, cam_mtx)
     if write_outputs:
-        cv2.imwrite('./output_images/undistorted/' + output_file_name, img_undistorted)
+        cv2.imwrite('./output_images/undistorted/' + output_file_name, cv2.cvtColor(img_undistorted, cv2.COLOR_RGB2BGR))
 
     img_threshold, img_threshold_colored = threshold(img_undistorted)
     if write_outputs:
-        cv2.imwrite('./output_images/threshold/' + output_file_name, img_threshold * 255)
+        cv2.imwrite('./output_images/threshold/' + output_file_name, cv2.cvtColor(img_threshold * 255, cv2.COLOR_RGB2BGR))
 
     M_inv, img_threshold_warped = warp(img_threshold)
     if write_outputs:
-        cv2.imwrite('./output_images/warped/' + output_file_name, img_threshold_warped * 255)
+        cv2.imwrite('./output_images/warped/' + output_file_name, cv2.cvtColor(img_threshold_warped * 255, cv2.COLOR_RGB2BGR))
 
     left_fit, right_fit, ploty, out_img, img_poly = find_lane_polynomials(img_threshold_warped)
     if write_outputs:
-        cv2.imwrite('./output_images/lane_lines/' + output_file_name, out_img)
+        cv2.imwrite('./output_images/lane_lines/' + output_file_name, cv2.cvtColor(out_img, cv2.COLOR_RGB2BGR))
 
     left_curverad = measure_curvature(np.max(ploty), left_fit)
     right_curverad = measure_curvature(np.max(ploty), right_fit)
@@ -46,7 +46,7 @@ def process_image(img, cam_mtx, dist_coeff, write_outputs=False, output_file_nam
                 (50, 100), cv2.FONT_HERSHEY_SIMPLEX,
                 1, (255, 255, 255), 2, cv2.LINE_AA)
     if write_outputs:
-        cv2.imwrite('./output_images/final/' + output_file_name, img_final)
+        cv2.imwrite('./output_images/final/' + output_file_name, cv2.cvtColor(img_final, cv2.COLOR_RGB2BGR))
 
     # # Plot the result
     # f, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 9))
@@ -70,7 +70,7 @@ def process_image(img, cam_mtx, dist_coeff, write_outputs=False, output_file_nam
     vis = np.concatenate((vis1, vis2), axis=0)
 
     if write_outputs:
-        cv2.imwrite('./output_images/debug/' + output_file_name, vis)
+        cv2.imwrite('./output_images/debug/' + output_file_name, cv2.cvtColor(vis, cv2.COLOR_RGB2BGR))
     return vis
 
 # Make a list of calibration images
@@ -78,18 +78,18 @@ calib_images = glob.glob('./camera_cal/calibration*.jpg')
 # calibrate camera
 cam_mtx, dist_coeff = calibrateCamera(calib_images)
 
-test_images = glob.glob('./test_images/*.jpg')
+test_images = glob.glob('./test_images/test1.jpg')
 
-# for image in test_images:
-#
-#     img_orig = cv2.imread(image)
-#     img_rgb = cv2.cvtColor(img_orig, cv2.COLOR_BGR2RGB)
-#     process_image(img_rgb, cam_mtx, dist_coeff, True, os.path.basename(image))
+for image in test_images:
+
+    img_orig = cv2.imread(image)
+    img_rgb = cv2.cvtColor(img_orig, cv2.COLOR_BGR2RGB)
+    process_image(img_rgb, cam_mtx, dist_coeff, True, os.path.basename(image))
 
 # clip1 = VideoFileClip("project_video.mp4").subclip(0,5)
-clip1 = VideoFileClip("project_video.mp4")
-result_clip = clip1.fl_image(lambda image: process_image(image, cam_mtx, dist_coeff))
-result_clip.write_videofile("project_video_output.mp4", audio=False)
+# clip1 = VideoFileClip("project_video.mp4")
+# result_clip = clip1.fl_image(lambda image: process_image(image, cam_mtx, dist_coeff))
+# result_clip.write_videofile("project_video_output.mp4", audio=False)
 
 print("ok")
 

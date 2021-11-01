@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import os
-
+import matplotlib.pyplot as plt
 
 def calibrateCamera(images):
     nx = 9  #number of inside corners in x
@@ -40,6 +40,19 @@ def calibrateCamera(images):
         img_undistorted = cv2.undistort(img_orig, mtx, dist, None, mtx)
 
         cv2.imwrite('./output_images/calib/' + os.path.basename(image), img_undistorted)
+
+        # # Plot the result
+        # f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
+        # f.tight_layout()
+        #
+        # ax1.imshow(img_orig)
+        # ax1.set_title('Original Image', fontsize=40)
+        #
+        # ax2.imshow(img_undistorted)
+        # ax2.set_title('Undistorted Image', fontsize=40)
+        #
+        # plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
+        # plt.show()
 
     cv2.destroyAllWindows()
 

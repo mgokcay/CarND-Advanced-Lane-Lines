@@ -7,7 +7,7 @@ def threshold(img):
 
     u_threshold = 150
     s_threshold = 240
-    l_threshold = 175
+    l_threshold = 200
     sx_thresh = (30, 200)
 
     # Convert to HLS color space and separate the V channel
