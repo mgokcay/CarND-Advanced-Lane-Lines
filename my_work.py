@@ -80,16 +80,16 @@ cam_mtx, dist_coeff = calibrateCamera(calib_images)
 
 test_images = glob.glob('./test_images/test1.jpg')
 
-for image in test_images:
-
-    img_orig = cv2.imread(image)
-    img_rgb = cv2.cvtColor(img_orig, cv2.COLOR_BGR2RGB)
-    process_image(img_rgb, cam_mtx, dist_coeff, True, os.path.basename(image))
+# for image in test_images:
+#
+#     img_orig = cv2.imread(image)
+#     img_rgb = cv2.cvtColor(img_orig, cv2.COLOR_BGR2RGB)
+#     process_image(img_rgb, cam_mtx, dist_coeff, True, os.path.basename(image))
 
 # clip1 = VideoFileClip("project_video.mp4").subclip(0,5)
-# clip1 = VideoFileClip("project_video.mp4")
-# result_clip = clip1.fl_image(lambda image: process_image(image, cam_mtx, dist_coeff))
-# result_clip.write_videofile("project_video_output.mp4", audio=False)
+clip1 = VideoFileClip("project_video.mp4")
+result_clip = clip1.fl_image(lambda image: process_image(image, cam_mtx, dist_coeff))
+result_clip.write_videofile("project_video_output.mp4", audio=False)
 
 print("ok")
 
